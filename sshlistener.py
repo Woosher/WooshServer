@@ -75,6 +75,8 @@ def isNewFile(filename):
 			time = linesplit[1].split("\r")[0]
 			numberTime = float(time)
 			newTime = float(os.path.getctime(filename))
+			print "NEW TIME: " + str(newTime)
+			print "OLD TIME: " + str(numberTime)
 			isNew = (int(newTime) > numberTime)
 	return isNew
 
