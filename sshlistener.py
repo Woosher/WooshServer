@@ -8,7 +8,7 @@ import shlex
 import glob
 import tarfile
 from os.path import basename
-
+import re
 
 ACCEPTED = "Accepted password"
 NEW_SESSION = "New session"
@@ -25,6 +25,9 @@ def main():
 	resetAndListen()
 
 def resetAndListen():
+	#MAKE WOOSH DIR
+        makeDir(path)
+
 	#CLEAR SSH LOG
 	open(logpath, 'w').close()
 	createLogFile()
@@ -34,9 +37,6 @@ def resetAndListen():
         stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	p = select.poll()
 	p.register(f.stdout)
-
-	#MAKE WOOSH DIR
-	makeDir(path)
 
 	while True:
 		if p.poll(1):
@@ -80,8 +80,10 @@ def makeDir(inputPath):
 		os.makedirs(inputPath)
 
 def findNewestArchive(path):
+	latest_file = None
 	list_of_files = glob.glob(path +'/*.tar.gz') 
-	latest_file = max(list_of_files, key=os.path.getctime)
+	if list_of_files:
+		latest_file = max(list_of_files, key=os.path.getctime)
 	return latest_file
 
 def executeShellScriptFiles(folderpath):
@@ -130,10 +132,11 @@ def checkTail(line):
 def contains(line, word_to_find):
 	return word_to_find in line
 
-def stripForId(sentence):
-	newSentence = sentence.replace(".", "")
-	stuff =  [int(s) for s in newSentence.split() if s.isdigit()]
-	return stuff[0]
+def stripForId(inputsentence):
+	sentence = re.sub("[^0-9]", "", inputsentence)
+	#newSentence = sentence.replace(".", "")
+	#stuff =  [int(s) for s in newSentence.split() if s.isdigit()]
+	return int(sentence)
 
 def indexOfWords(words, sentence):
 	wordlist = words.split(" ")
@@ -151,10 +154,11 @@ def indexOfWords(words, sentence):
 
 def workerMethod(threadname, sessionId):
 	newestArchive = findNewestArchive(path)
-	if isNewFile(newestArchive):
-		pathToExtract  = extractArchive(newestArchive)
-		appendToLog(newestArchive)
-		executeShellScriptFiles(pathToExtract)
+	if newestArchive is not None:
+		if isNewFile(newestArchive):
+			pathToExtract  = extractArchive(newestArchive)
+			appendToLog(newestArchive)
+			executeShellScriptFiles(pathToExtract)
 	
 	sessions.remove(sessionId)
 
