@@ -9,6 +9,9 @@ import glob
 import tarfile
 from os.path import basename
 import re
+import getpass
+import pwd
+import grp
 
 ACCEPTED = "Accepted password"
 NEW_SESSION = "New session"
@@ -16,7 +19,7 @@ REMOVED_SESSION = "Removed session"
 DISCONNECTED = "Disconnected from"
 NOT_FOUND = -1
 sessions = []
-path = r'/etc/woosh/packages/wooshserver/' 
+path = r'/etc/wooshtest/packages/wooshserver/' 
 logpath = "/var/log/auth.log"
 logFile = path + "executelog.txt"
 
@@ -26,7 +29,8 @@ def main():
 
 def resetAndListen():
 	#MAKE WOOSH DIR
-        makeDir(path)
+	makeDir(path)
+	giveUserPermission()
 
 	#CLEAR SSH LOG
 	open(logpath, 'w').close()
@@ -45,6 +49,13 @@ def resetAndListen():
 
 
 '''-------------------METHODS FOR OPERATING ON FILES/FOLDERS-------------------'''
+
+def giveUserPermission():
+	username = getpass.getuser()
+	uid = pwd.getpwnam(username).pw_uid
+	gid = grp.getgrnam("nogroup").gr_gid
+	os.chown(path, uid, gid)
+
 
 def createLogFile():
 	if os.path.exists(logFile):
