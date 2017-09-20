@@ -143,8 +143,6 @@ def contains(line, word_to_find):
 
 def stripForId(inputsentence):
 	sentence = re.sub("[^0-9]", "", inputsentence)
-	#newSentence = sentence.replace(".", "")
-	#stuff =  [int(s) for s in newSentence.split() if s.isdigit()]
 	return int(sentence)
 
 def indexOfWords(words, sentence):
