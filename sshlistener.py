@@ -53,7 +53,8 @@ def resetAndListen():
 
 def giveUserPermission():
 	username = getpass.getuser()
-	subprocess.call(['chmod', '-R', '+w', path])
+	subprocess.call(['chmod', '-R', 'u+w', path])
+	
 	#shutil.chown(path, user=username, group=None)
 	'''
 	uid = pwd.getpwnam(username).pw_uid
