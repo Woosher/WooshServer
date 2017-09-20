@@ -12,6 +12,7 @@ import re
 import getpass
 import pwd
 import grp
+import shutil
 
 ACCEPTED = "Accepted password"
 NEW_SESSION = "New session"
@@ -52,9 +53,12 @@ def resetAndListen():
 
 def giveUserPermission():
 	username = getpass.getuser()
+	subprocess.call(['chmod', '-R', '+w', path])
+	#shutil.chown(path, user=username, group=None)
+	'''
 	uid = pwd.getpwnam(username).pw_uid
 	gid = grp.getgrnam("nogroup").gr_gid
-	os.chown(path, uid, gid)
+	os.chown(path, uid, gid)'''
 
 
 def createLogFile():
