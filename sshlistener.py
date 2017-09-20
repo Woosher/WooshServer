@@ -52,9 +52,9 @@ def resetAndListen():
 '''-------------------METHODS FOR OPERATING ON FILES/FOLDERS-------------------'''
 
 def giveUserPermission():
-	username = getpass.getuser()
-	subprocess.call(['chmod', '-R', 'u+w', path])
-	
+	username = subprocess.check_output("who").split()[0]
+	subprocess.call(['chmod','-R',"777", path])
+
 	#shutil.chown(path, user=username, group=None)
 	'''
 	uid = pwd.getpwnam(username).pw_uid
