@@ -74,7 +74,10 @@ def isNewFile(filename):
 			path = linesplit[0]
 			time = linesplit[1].split("\r")[0]
 			numberTime = float(time)
-			newTime = float(os.path.getctime(filename))
+			
+			stat = os.stat(path_to_file)
+			#newTime = float(os.path.getctime(filename))
+			newTime = stat.st_birthtime
 			print "NEW TIME: " + str(newTime)
 			print "OLD TIME: " + str(numberTime)
 			isNew = (int(newTime) > numberTime)
