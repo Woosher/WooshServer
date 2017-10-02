@@ -20,7 +20,7 @@ REMOVED_SESSION = "Removed session"
 DISCONNECTED = "Disconnected from"
 NOT_FOUND = -1
 sessions = []
-path = r'/etc/wooshtest/packages/wooshserver/' 
+path = r'/etc/woosh/packages/wooshserver/' 
 logpath = "/var/log/auth.log"
 logFile = path + "executelog.txt"
 
