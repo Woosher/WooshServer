@@ -103,8 +103,10 @@ def executeShellScriptFiles(folderpath):
 			filesForExecution.append(os.path.join(folderpath,file))
 
 	for file in filesForExecution:
+		print "executing " + file
 		make_executable(file)
 		subprocess.call([file])
+		print "executing DONE " + file
 
 def extractArchive(archive):
 	destination = basename(archive).split(".")[0]
